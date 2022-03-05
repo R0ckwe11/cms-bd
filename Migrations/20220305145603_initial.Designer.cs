@@ -11,8 +11,8 @@ using cms_bd.Data;
 
 namespace cms_bd.Migrations
 {
-    [DbContext(typeof(CmsDbContext))]
-    [Migration("20220303161032_initial")]
+    [DbContext(typeof(DataContext))]
+    [Migration("20220305145603_initial")]
     partial class initial
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -24,7 +24,7 @@ namespace cms_bd.Migrations
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder, 1L, 1);
 
-            modelBuilder.Entity("cms_bd.Models.Config", b =>
+            modelBuilder.Entity("cms_bd.Config", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -53,10 +53,12 @@ namespace cms_bd.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Config", (string)null);
+                    b.HasIndex("UpdatedBy");
+
+                    b.ToTable("Config");
                 });
 
-            modelBuilder.Entity("cms_bd.Models.Coupon", b =>
+            modelBuilder.Entity("cms_bd.Coupon", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -107,10 +109,14 @@ namespace cms_bd.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Coupon", (string)null);
+                    b.HasIndex("CreatedBy");
+
+                    b.HasIndex("UpdatedBy");
+
+                    b.ToTable("Coupons");
                 });
 
-            modelBuilder.Entity("cms_bd.Models.Post", b =>
+            modelBuilder.Entity("cms_bd.Post", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -152,10 +158,14 @@ namespace cms_bd.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Post", (string)null);
+                    b.HasIndex("CreatedBy");
+
+                    b.HasIndex("UpdatedBy");
+
+                    b.ToTable("Posts");
                 });
 
-            modelBuilder.Entity("cms_bd.Models.Tag", b =>
+            modelBuilder.Entity("cms_bd.Tag", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -186,10 +196,14 @@ namespace cms_bd.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Tag", (string)null);
+                    b.HasIndex("CreatedBy");
+
+                    b.HasIndex("UpdatedBy");
+
+                    b.ToTable("Tags");
                 });
 
-            modelBuilder.Entity("cms_bd.Models.TagCouponPivot", b =>
+            modelBuilder.Entity("cms_bd.TagCouponPivot", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -205,10 +219,14 @@ namespace cms_bd.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("TagCouponPivot", (string)null);
+                    b.HasIndex("CouponId");
+
+                    b.HasIndex("TagId");
+
+                    b.ToTable("TagCouponPivot");
                 });
 
-            modelBuilder.Entity("cms_bd.Models.UsedCoupon", b =>
+            modelBuilder.Entity("cms_bd.UsedCoupon", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -228,10 +246,14 @@ namespace cms_bd.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("UsedCoupon", (string)null);
+                    b.HasIndex("CouponId");
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("UsedCoupons");
                 });
 
-            modelBuilder.Entity("cms_bd.Models.User", b =>
+            modelBuilder.Entity("cms_bd.User", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -267,7 +289,144 @@ namespace cms_bd.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("User", (string)null);
+                    b.ToTable("Users");
+                });
+
+            modelBuilder.Entity("cms_bd.Config", b =>
+                {
+                    b.HasOne("cms_bd.User", "UserUpdating")
+                        .WithMany("ConfigsUpdated")
+                        .HasForeignKey("UpdatedBy")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("UserUpdating");
+                });
+
+            modelBuilder.Entity("cms_bd.Coupon", b =>
+                {
+                    b.HasOne("cms_bd.User", "UserCreating")
+                        .WithMany("CouponsCreated")
+                        .HasForeignKey("CreatedBy")
+                        .OnDelete(DeleteBehavior.NoAction)
+                        .IsRequired();
+
+                    b.HasOne("cms_bd.User", "UserUpdating")
+                        .WithMany("CouponsUpdated")
+                        .HasForeignKey("UpdatedBy")
+                        .OnDelete(DeleteBehavior.NoAction)
+                        .IsRequired();
+
+                    b.Navigation("UserCreating");
+
+                    b.Navigation("UserUpdating");
+                });
+
+            modelBuilder.Entity("cms_bd.Post", b =>
+                {
+                    b.HasOne("cms_bd.User", "UserCreating")
+                        .WithMany("PostsCreated")
+                        .HasForeignKey("CreatedBy")
+                        .OnDelete(DeleteBehavior.NoAction)
+                        .IsRequired();
+
+                    b.HasOne("cms_bd.User", "UserUpdating")
+                        .WithMany("PostsUpdated")
+                        .HasForeignKey("UpdatedBy")
+                        .OnDelete(DeleteBehavior.NoAction)
+                        .IsRequired();
+
+                    b.Navigation("UserCreating");
+
+                    b.Navigation("UserUpdating");
+                });
+
+            modelBuilder.Entity("cms_bd.Tag", b =>
+                {
+                    b.HasOne("cms_bd.User", "UserCreating")
+                        .WithMany("TagsCreated")
+                        .HasForeignKey("CreatedBy")
+                        .OnDelete(DeleteBehavior.NoAction)
+                        .IsRequired();
+
+                    b.HasOne("cms_bd.User", "UserUpdating")
+                        .WithMany("TagsUpdated")
+                        .HasForeignKey("UpdatedBy")
+                        .OnDelete(DeleteBehavior.NoAction)
+                        .IsRequired();
+
+                    b.Navigation("UserCreating");
+
+                    b.Navigation("UserUpdating");
+                });
+
+            modelBuilder.Entity("cms_bd.TagCouponPivot", b =>
+                {
+                    b.HasOne("cms_bd.Coupon", "CouponPivot")
+                        .WithMany("TagCouponPivots")
+                        .HasForeignKey("CouponId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("cms_bd.Tag", "TagPivot")
+                        .WithMany("TagCouponPivots")
+                        .HasForeignKey("TagId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("CouponPivot");
+
+                    b.Navigation("TagPivot");
+                });
+
+            modelBuilder.Entity("cms_bd.UsedCoupon", b =>
+                {
+                    b.HasOne("cms_bd.Coupon", "CouponUsed")
+                        .WithMany("UsedBy")
+                        .HasForeignKey("CouponId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("cms_bd.User", "UserUsing")
+                        .WithMany("UsedCoupons")
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("CouponUsed");
+
+                    b.Navigation("UserUsing");
+                });
+
+            modelBuilder.Entity("cms_bd.Coupon", b =>
+                {
+                    b.Navigation("TagCouponPivots");
+
+                    b.Navigation("UsedBy");
+                });
+
+            modelBuilder.Entity("cms_bd.Tag", b =>
+                {
+                    b.Navigation("TagCouponPivots");
+                });
+
+            modelBuilder.Entity("cms_bd.User", b =>
+                {
+                    b.Navigation("ConfigsUpdated");
+
+                    b.Navigation("CouponsCreated");
+
+                    b.Navigation("CouponsUpdated");
+
+                    b.Navigation("PostsCreated");
+
+                    b.Navigation("PostsUpdated");
+
+                    b.Navigation("TagsCreated");
+
+                    b.Navigation("TagsUpdated");
+
+                    b.Navigation("UsedCoupons");
                 });
 #pragma warning restore 612, 618
         }
