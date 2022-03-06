@@ -8,13 +8,11 @@ namespace cms_bd.Models
     {
         [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
-        public int Id { get; set; }
-        public string Photo { get; set; }
-        public string Title { get; set; }
-        public string BackgroundColor { get; set; }
+        public int ID { get; set; }
+        public string Value { get; set; }
+        public string Type { get; set; }
         [DatabaseGenerated(DatabaseGeneratedOption.Computed)]
         public DateTime UpdatedAt { get; set; }
-
         [ForeignKey("UserUpdating")]
         public int UpdatedBy { get; set; }
 

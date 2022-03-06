@@ -6,7 +6,6 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using cms_bd;
 using cms_bd.Data;
 using cms_bd.Models;
 
@@ -49,7 +48,7 @@ namespace cms_bd.Controllers
         [HttpPut("{id}")]
         public async Task<IActionResult> PutUsedCoupon(int id, UsedCoupon usedCoupon)
         {
-            if (id != usedCoupon.Id)
+            if (id != usedCoupon.ID)
             {
                 return BadRequest();
             }
@@ -83,7 +82,7 @@ namespace cms_bd.Controllers
             _context.UsedCoupons.Add(usedCoupon);
             await _context.SaveChangesAsync();
 
-            return CreatedAtAction("GetUsedCoupon", new { id = usedCoupon.Id }, usedCoupon);
+            return CreatedAtAction("GetUsedCoupon", new { id = usedCoupon.ID }, usedCoupon);
         }
 
         // DELETE: api/UsedCoupons/5
@@ -104,7 +103,7 @@ namespace cms_bd.Controllers
 
         private bool UsedCouponExists(int id)
         {
-            return _context.UsedCoupons.Any(e => e.Id == id);
+            return _context.UsedCoupons.Any(e => e.ID == id);
         }
     }
 }

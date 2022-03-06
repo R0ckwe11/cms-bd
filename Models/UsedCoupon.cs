@@ -8,13 +8,11 @@ namespace cms_bd.Models
     {
         [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
-        public int Id { get; set; }
-
+        public int ID { get; set; }
         [ForeignKey("UserUsing")]
-        public int UserId { get; set; }
+        public int UserID { get; set; }
         [ForeignKey("CouponUsed")]
-        public int CouponId { get; set; }
-
+        public int CouponID { get; set; }
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public DateTime UsedAt { get; set; } = DateTime.Now;
 

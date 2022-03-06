@@ -6,7 +6,6 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using cms_bd;
 using cms_bd.Data;
 using cms_bd.Models;
 
@@ -49,7 +48,7 @@ namespace cms_bd.Controllers
         [HttpPut("{id}")]
         public async Task<IActionResult> PutPost(int id, Post post)
         {
-            if (id != post.Id)
+            if (id != post.ID)
             {
                 return BadRequest();
             }
@@ -83,7 +82,7 @@ namespace cms_bd.Controllers
             _context.Posts.Add(post);
             await _context.SaveChangesAsync();
 
-            return CreatedAtAction("GetPost", new { id = post.Id }, post);
+            return CreatedAtAction("GetPost", new { id = post.ID }, post);
         }
 
         // DELETE: api/Posts/5
@@ -104,7 +103,7 @@ namespace cms_bd.Controllers
 
         private bool PostExists(int id)
         {
-            return _context.Posts.Any(e => e.Id == id);
+            return _context.Posts.Any(e => e.ID == id);
         }
     }
 }

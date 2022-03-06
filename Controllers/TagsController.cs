@@ -6,7 +6,6 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using cms_bd;
 using cms_bd.Data;
 using cms_bd.Models;
 
@@ -49,7 +48,7 @@ namespace cms_bd.Controllers
         [HttpPut("{id}")]
         public async Task<IActionResult> PutTag(int id, Tag tag)
         {
-            if (id != tag.Id)
+            if (id != tag.ID)
             {
                 return BadRequest();
             }
@@ -83,7 +82,7 @@ namespace cms_bd.Controllers
             _context.Tags.Add(tag);
             await _context.SaveChangesAsync();
 
-            return CreatedAtAction("GetTag", new { id = tag.Id }, tag);
+            return CreatedAtAction("GetTag", new { id = tag.ID }, tag);
         }
 
         // DELETE: api/Tags/5
@@ -104,7 +103,7 @@ namespace cms_bd.Controllers
 
         private bool TagExists(int id)
         {
-            return _context.Tags.Any(e => e.Id == id);
+            return _context.Tags.Any(e => e.ID == id);
         }
     }
 }

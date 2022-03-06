@@ -22,23 +22,15 @@ namespace cms_bd.Migrations
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder, 1L, 1);
 
-            modelBuilder.Entity("cms_bd.Config", b =>
+            modelBuilder.Entity("cms_bd.Models.Config", b =>
                 {
-                    b.Property<int>("Id")
+                    b.Property<int>("ID")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("ID"), 1L, 1);
 
-                    b.Property<string>("BackgroundColor")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Photo")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Title")
+                    b.Property<string>("Type")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
@@ -49,20 +41,24 @@ namespace cms_bd.Migrations
                     b.Property<int>("UpdatedBy")
                         .HasColumnType("int");
 
-                    b.HasKey("Id");
+                    b.Property<string>("Value")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("ID");
 
                     b.HasIndex("UpdatedBy");
 
                     b.ToTable("Config");
                 });
 
-            modelBuilder.Entity("cms_bd.Coupon", b =>
+            modelBuilder.Entity("cms_bd.Models.Coupon", b =>
                 {
-                    b.Property<int>("Id")
+                    b.Property<int>("ID")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("ID"), 1L, 1);
 
                     b.Property<string>("Code")
                         .IsRequired()
@@ -79,6 +75,9 @@ namespace cms_bd.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<int>("IsArchived")
+                        .HasColumnType("int");
+
                     b.Property<int>("IsVisible")
                         .HasColumnType("int");
 
@@ -89,8 +88,9 @@ namespace cms_bd.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int>("Status")
-                        .HasColumnType("int");
+                    b.Property<string>("Title")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<DateTime>("UpdatedAt")
                         .ValueGeneratedOnAddOrUpdate()
@@ -102,10 +102,10 @@ namespace cms_bd.Migrations
                     b.Property<DateTime>("ValidFrom")
                         .HasColumnType("datetime2");
 
-                    b.Property<DateTime>("ValidUntil")
+                    b.Property<DateTime>("ValidTo")
                         .HasColumnType("datetime2");
 
-                    b.HasKey("Id");
+                    b.HasKey("ID");
 
                     b.HasIndex("CreatedBy");
 
@@ -114,13 +114,13 @@ namespace cms_bd.Migrations
                     b.ToTable("Coupons");
                 });
 
-            modelBuilder.Entity("cms_bd.Post", b =>
+            modelBuilder.Entity("cms_bd.Models.Post", b =>
                 {
-                    b.Property<int>("Id")
+                    b.Property<int>("ID")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("ID"), 1L, 1);
 
                     b.Property<string>("Content")
                         .IsRequired()
@@ -154,7 +154,7 @@ namespace cms_bd.Migrations
                     b.Property<int>("UpdatedBy")
                         .HasColumnType("int");
 
-                    b.HasKey("Id");
+                    b.HasKey("ID");
 
                     b.HasIndex("CreatedBy");
 
@@ -163,13 +163,13 @@ namespace cms_bd.Migrations
                     b.ToTable("Posts");
                 });
 
-            modelBuilder.Entity("cms_bd.Tag", b =>
+            modelBuilder.Entity("cms_bd.Models.Tag", b =>
                 {
-                    b.Property<int>("Id")
+                    b.Property<int>("ID")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("ID"), 1L, 1);
 
                     b.Property<DateTime>("CreatedAt")
                         .ValueGeneratedOnAdd()
@@ -178,12 +178,12 @@ namespace cms_bd.Migrations
                     b.Property<int>("CreatedBy")
                         .HasColumnType("int");
 
-                    b.Property<string>("Name")
+                    b.Property<int>("IsArchived")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Title")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
-
-                    b.Property<int>("Status")
-                        .HasColumnType("int");
 
                     b.Property<DateTime>("UpdatedAt")
                         .ValueGeneratedOnAddOrUpdate()
@@ -192,7 +192,7 @@ namespace cms_bd.Migrations
                     b.Property<int>("UpdatedBy")
                         .HasColumnType("int");
 
-                    b.HasKey("Id");
+                    b.HasKey("ID");
 
                     b.HasIndex("CreatedBy");
 
@@ -201,63 +201,63 @@ namespace cms_bd.Migrations
                     b.ToTable("Tags");
                 });
 
-            modelBuilder.Entity("cms_bd.TagCouponPivot", b =>
+            modelBuilder.Entity("cms_bd.Models.TagCouponPivot", b =>
                 {
-                    b.Property<int>("Id")
+                    b.Property<int>("ID")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("ID"), 1L, 1);
 
-                    b.Property<int>("CouponId")
+                    b.Property<int>("CouponID")
                         .HasColumnType("int");
 
-                    b.Property<int>("TagId")
+                    b.Property<int>("TagID")
                         .HasColumnType("int");
 
-                    b.HasKey("Id");
+                    b.HasKey("ID");
 
-                    b.HasIndex("CouponId");
+                    b.HasIndex("CouponID");
 
-                    b.HasIndex("TagId");
+                    b.HasIndex("TagID");
 
                     b.ToTable("TagCouponPivot");
                 });
 
-            modelBuilder.Entity("cms_bd.UsedCoupon", b =>
+            modelBuilder.Entity("cms_bd.Models.UsedCoupon", b =>
                 {
-                    b.Property<int>("Id")
+                    b.Property<int>("ID")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("ID"), 1L, 1);
 
-                    b.Property<int>("CouponId")
+                    b.Property<int>("CouponID")
                         .HasColumnType("int");
 
                     b.Property<DateTime>("UsedAt")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("datetime2");
 
-                    b.Property<int>("UserId")
+                    b.Property<int>("UserID")
                         .HasColumnType("int");
 
-                    b.HasKey("Id");
+                    b.HasKey("ID");
 
-                    b.HasIndex("CouponId");
+                    b.HasIndex("CouponID");
 
-                    b.HasIndex("UserId");
+                    b.HasIndex("UserID");
 
                     b.ToTable("UsedCoupons");
                 });
 
-            modelBuilder.Entity("cms_bd.User", b =>
+            modelBuilder.Entity("cms_bd.Models.User", b =>
                 {
-                    b.Property<int>("Id")
+                    b.Property<int>("ID")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("ID"), 1L, 1);
 
                     b.Property<DateTime>("CreatedAt")
                         .ValueGeneratedOnAdd()
@@ -285,14 +285,14 @@ namespace cms_bd.Migrations
                         .ValueGeneratedOnAddOrUpdate()
                         .HasColumnType("datetime2");
 
-                    b.HasKey("Id");
+                    b.HasKey("ID");
 
                     b.ToTable("Users");
                 });
 
-            modelBuilder.Entity("cms_bd.Config", b =>
+            modelBuilder.Entity("cms_bd.Models.Config", b =>
                 {
-                    b.HasOne("cms_bd.User", "UserUpdating")
+                    b.HasOne("cms_bd.Models.User", "UserUpdating")
                         .WithMany("ConfigsUpdated")
                         .HasForeignKey("UpdatedBy")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -301,15 +301,15 @@ namespace cms_bd.Migrations
                     b.Navigation("UserUpdating");
                 });
 
-            modelBuilder.Entity("cms_bd.Coupon", b =>
+            modelBuilder.Entity("cms_bd.Models.Coupon", b =>
                 {
-                    b.HasOne("cms_bd.User", "UserCreating")
+                    b.HasOne("cms_bd.Models.User", "UserCreating")
                         .WithMany("CouponsCreated")
                         .HasForeignKey("CreatedBy")
                         .OnDelete(DeleteBehavior.NoAction)
                         .IsRequired();
 
-                    b.HasOne("cms_bd.User", "UserUpdating")
+                    b.HasOne("cms_bd.Models.User", "UserUpdating")
                         .WithMany("CouponsUpdated")
                         .HasForeignKey("UpdatedBy")
                         .OnDelete(DeleteBehavior.NoAction)
@@ -320,15 +320,15 @@ namespace cms_bd.Migrations
                     b.Navigation("UserUpdating");
                 });
 
-            modelBuilder.Entity("cms_bd.Post", b =>
+            modelBuilder.Entity("cms_bd.Models.Post", b =>
                 {
-                    b.HasOne("cms_bd.User", "UserCreating")
+                    b.HasOne("cms_bd.Models.User", "UserCreating")
                         .WithMany("PostsCreated")
                         .HasForeignKey("CreatedBy")
                         .OnDelete(DeleteBehavior.NoAction)
                         .IsRequired();
 
-                    b.HasOne("cms_bd.User", "UserUpdating")
+                    b.HasOne("cms_bd.Models.User", "UserUpdating")
                         .WithMany("PostsUpdated")
                         .HasForeignKey("UpdatedBy")
                         .OnDelete(DeleteBehavior.NoAction)
@@ -339,15 +339,15 @@ namespace cms_bd.Migrations
                     b.Navigation("UserUpdating");
                 });
 
-            modelBuilder.Entity("cms_bd.Tag", b =>
+            modelBuilder.Entity("cms_bd.Models.Tag", b =>
                 {
-                    b.HasOne("cms_bd.User", "UserCreating")
+                    b.HasOne("cms_bd.Models.User", "UserCreating")
                         .WithMany("TagsCreated")
                         .HasForeignKey("CreatedBy")
                         .OnDelete(DeleteBehavior.NoAction)
                         .IsRequired();
 
-                    b.HasOne("cms_bd.User", "UserUpdating")
+                    b.HasOne("cms_bd.Models.User", "UserUpdating")
                         .WithMany("TagsUpdated")
                         .HasForeignKey("UpdatedBy")
                         .OnDelete(DeleteBehavior.NoAction)
@@ -358,17 +358,17 @@ namespace cms_bd.Migrations
                     b.Navigation("UserUpdating");
                 });
 
-            modelBuilder.Entity("cms_bd.TagCouponPivot", b =>
+            modelBuilder.Entity("cms_bd.Models.TagCouponPivot", b =>
                 {
-                    b.HasOne("cms_bd.Coupon", "CouponPivot")
+                    b.HasOne("cms_bd.Models.Coupon", "CouponPivot")
                         .WithMany("TagCouponPivots")
-                        .HasForeignKey("CouponId")
+                        .HasForeignKey("CouponID")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("cms_bd.Tag", "TagPivot")
+                    b.HasOne("cms_bd.Models.Tag", "TagPivot")
                         .WithMany("TagCouponPivots")
-                        .HasForeignKey("TagId")
+                        .HasForeignKey("TagID")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
@@ -377,17 +377,17 @@ namespace cms_bd.Migrations
                     b.Navigation("TagPivot");
                 });
 
-            modelBuilder.Entity("cms_bd.UsedCoupon", b =>
+            modelBuilder.Entity("cms_bd.Models.UsedCoupon", b =>
                 {
-                    b.HasOne("cms_bd.Coupon", "CouponUsed")
+                    b.HasOne("cms_bd.Models.Coupon", "CouponUsed")
                         .WithMany("UsedBy")
-                        .HasForeignKey("CouponId")
+                        .HasForeignKey("CouponID")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("cms_bd.User", "UserUsing")
+                    b.HasOne("cms_bd.Models.User", "UserUsing")
                         .WithMany("UsedCoupons")
-                        .HasForeignKey("UserId")
+                        .HasForeignKey("UserID")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
@@ -396,19 +396,19 @@ namespace cms_bd.Migrations
                     b.Navigation("UserUsing");
                 });
 
-            modelBuilder.Entity("cms_bd.Coupon", b =>
+            modelBuilder.Entity("cms_bd.Models.Coupon", b =>
                 {
                     b.Navigation("TagCouponPivots");
 
                     b.Navigation("UsedBy");
                 });
 
-            modelBuilder.Entity("cms_bd.Tag", b =>
+            modelBuilder.Entity("cms_bd.Models.Tag", b =>
                 {
                     b.Navigation("TagCouponPivots");
                 });
 
-            modelBuilder.Entity("cms_bd.User", b =>
+            modelBuilder.Entity("cms_bd.Models.User", b =>
                 {
                     b.Navigation("ConfigsUpdated");
 

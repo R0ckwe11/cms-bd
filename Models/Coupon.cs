@@ -8,24 +8,21 @@ namespace cms_bd.Models
     {
         [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
-        public int Id { get; set; }
-
+        public int ID { get; set; }
+        public string Title { get; set; }
         public string Photo { get; set; }
         public string Description { get; set; }
         public string Code { get; set; }
-        public int IsVisible { get; set; }
         public int Order { get; set; }
-        public int Status { get; set; }
         public DateTime ValidFrom { get; set; }
-        public DateTime ValidUntil { get; set; }
-
+        public DateTime ValidTo { get; set; }
+        public int IsVisible { get; set; }
+        public int IsArchived { get; set; }
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public DateTime CreatedAt { get; set; }
-
+        public int CreatedBy { get; set; }
         [DatabaseGenerated(DatabaseGeneratedOption.Computed)]
         public DateTime UpdatedAt { get; set; }
-
-        public int CreatedBy { get; set; }
         public int UpdatedBy { get; set; }
 
         public virtual User UserCreating { get; set; }

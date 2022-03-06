@@ -6,7 +6,6 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using cms_bd;
 using cms_bd.Data;
 using cms_bd.Models;
 
@@ -49,7 +48,7 @@ namespace cms_bd.Controllers
         [HttpPut("{id}")]
         public async Task<IActionResult> PutTagCouponPivot(int id, TagCouponPivot tagCouponPivot)
         {
-            if (id != tagCouponPivot.Id)
+            if (id != tagCouponPivot.ID)
             {
                 return BadRequest();
             }
@@ -83,7 +82,7 @@ namespace cms_bd.Controllers
             _context.TagCouponPivot.Add(tagCouponPivot);
             await _context.SaveChangesAsync();
 
-            return CreatedAtAction("GetTagCouponPivot", new { id = tagCouponPivot.Id }, tagCouponPivot);
+            return CreatedAtAction("GetTagCouponPivot", new { id = tagCouponPivot.ID }, tagCouponPivot);
         }
 
         // DELETE: api/TagCouponPivots/5
@@ -104,7 +103,7 @@ namespace cms_bd.Controllers
 
         private bool TagCouponPivotExists(int id)
         {
-            return _context.TagCouponPivot.Any(e => e.Id == id);
+            return _context.TagCouponPivot.Any(e => e.ID == id);
         }
     }
 }

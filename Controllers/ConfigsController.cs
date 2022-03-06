@@ -6,7 +6,6 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using cms_bd;
 using cms_bd.Data;
 using cms_bd.Models;
 
@@ -49,7 +48,7 @@ namespace cms_bd.Controllers
         [HttpPut("{id}")]
         public async Task<IActionResult> PutConfig(int id, Config config)
         {
-            if (id != config.Id)
+            if (id != config.ID)
             {
                 return BadRequest();
             }
@@ -83,7 +82,7 @@ namespace cms_bd.Controllers
             _context.Config.Add(config);
             await _context.SaveChangesAsync();
 
-            return CreatedAtAction("GetConfig", new { id = config.Id }, config);
+            return CreatedAtAction("GetConfig", new { id = config.ID }, config);
         }
 
         // DELETE: api/Configs/5
@@ -104,7 +103,7 @@ namespace cms_bd.Controllers
 
         private bool ConfigExists(int id)
         {
-            return _context.Config.Any(e => e.Id == id);
+            return _context.Config.Any(e => e.ID == id);
         }
     }
 }

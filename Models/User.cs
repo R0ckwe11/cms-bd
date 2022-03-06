@@ -8,10 +8,10 @@ namespace cms_bd.Models
     {
         [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
-        public int Id { get; set; }
+        public int ID { get; set; }
+        public string Name { get; set; }
         public string Email { get; set; }
         public string Password { get; set; }
-        public string Name { get; set; }
         public int Role { get; set; }
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public DateTime CreatedAt { get; set; } = DateTime.Now;
