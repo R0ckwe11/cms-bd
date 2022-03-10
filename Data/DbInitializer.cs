@@ -42,8 +42,8 @@ namespace cms_bd.Data
 
             var coupons = new Coupon[]
             {
-                new() { Title = "Coupon2", ImageID = 2, Description = "example description 2", Code = "2222", Order = 2, ValidFrom = DateTime.Now, ValidTo = DateTime.Now.AddDays(10), IsVisible = 1, UpdatedBy = 1 },
-                new() { Title = "Coupon1", ImageID = 2, Description = "example description 1", Code = "1111", Order = 1, ValidFrom = DateTime.Now, ValidTo = DateTime.Now.AddDays(10), IsVisible = 1, UpdatedBy = 1 },
+                new() { Name = "Coupon2", ImageID = 2, Description = "example description 2", Code = "2222", Order = 2, ValidFrom = DateTime.Now, ValidTo = DateTime.Now.AddDays(10), IsVisible = 1, UpdatedBy = 1 },
+                new() { Name = "Coupon1", ImageID = 2, Description = "example description 1", Code = "1111", Order = 1, ValidFrom = DateTime.Now, ValidTo = DateTime.Now.AddDays(10), IsVisible = 1, UpdatedBy = 1 },
             };
             context.Coupons.AddRange(coupons);
             context.SaveChanges();
@@ -60,9 +60,8 @@ namespace cms_bd.Data
             var tagCouponPivots = new TagCouponPivot[]
             {
                 new() { CouponID = 1, TagID = 1 },
-                new() { CouponID = 1, TagID = 2 },
+                new() { CouponID = 1, TagID = 3 },
                 new() { CouponID = 2, TagID = 2 },
-                new() { CouponID = 2, TagID = 3 },
             };
             context.TagCouponPivot.AddRange(tagCouponPivots);
             context.SaveChanges();

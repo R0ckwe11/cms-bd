@@ -7,11 +7,12 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using cms_bd.Data;
+using cms_bd.DTOs;
 using cms_bd.Models;
 
 namespace cms_bd.Controllers
 {
-    [Route("api/[controller]")]
+    [Route("api/used-coupons")]
     [ApiController]
     public class UsedCouponsController : ControllerBase
     {
@@ -74,15 +75,19 @@ namespace cms_bd.Controllers
             return NoContent();
         }
 
-        // POST: api/UsedCoupons
+        // POST: api/used-coupons/5/1
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
-        [HttpPost]
-        public async Task<ActionResult<UsedCoupon>> PostUsedCoupon(UsedCoupon usedCoupon)
+        [HttpPost("{couponID}/{userID}")]
+        public async Task<ActionResult<UsedCouponDTO>> UseCoupon(int couponID, int userID = 1)
         {
-            _context.UsedCoupons.Add(usedCoupon);
+            var usedCoupon = _context.UsedCoupons.Add(new UsedCoupon()
+            {
+                CouponID = couponID,
+                UserID = userID
+            }).Entity;
             await _context.SaveChangesAsync();
 
-            return CreatedAtAction("GetUsedCoupon", new { id = usedCoupon.ID }, usedCoupon);
+            return Ok(new UsedCouponDTO(usedCoupon));
         }
 
         // DELETE: api/UsedCoupons/5

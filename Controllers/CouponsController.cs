@@ -38,7 +38,7 @@ namespace cms_bd.Controllers
                 var tagCouponPivots = await _context.TagCouponPivot
                     .Where(t => t.CouponID == coupon.ID)
                     .ToListAsync();
-                
+
                 var tags = new List<TagDTO>();
                 foreach (var tagCouponPivot in tagCouponPivots)
                 {
@@ -54,9 +54,9 @@ namespace cms_bd.Controllers
             return couponDTOs;
         }
 
-        // GET: api/Coupons/5
+        // GET: api/coupons/5
         [HttpGet("{id}")]
-        public async Task<ActionResult<Coupon>> GetCoupon(int id)
+        public async Task<ActionResult<CouponDetailsDTO>> GetCoupon(int id)
         {
             var coupon = await _context.Coupons.FindAsync(id);
 
@@ -65,7 +65,7 @@ namespace cms_bd.Controllers
                 return NotFound();
             }
 
-            return coupon;
+            return Ok(new CouponDetailsDTO(coupon));
         }
 
         // PUT: api/Coupons/5

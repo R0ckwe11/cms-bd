@@ -12,7 +12,7 @@ using cms_bd.Data;
 namespace cms_bd.Migrations
 {
     [DbContext(typeof(DataContext))]
-    [Migration("20220310140618_initial")]
+    [Migration("20220310171544_initial")]
     partial class initial
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -78,11 +78,11 @@ namespace cms_bd.Migrations
                     b.Property<int>("IsVisible")
                         .HasColumnType("int");
 
+                    b.Property<string>("Name")
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<int>("Order")
                         .HasColumnType("int");
-
-                    b.Property<string>("Title")
-                        .HasColumnType("nvarchar(max)");
 
                     b.Property<DateTime>("UpdatedAt")
                         .ValueGeneratedOnAddOrUpdate()
