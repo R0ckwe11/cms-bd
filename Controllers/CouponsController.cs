@@ -25,14 +25,14 @@ namespace cms_bd.Controllers
 
         // GET: api/coupons
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<CouponDTO>>> GetCoupons()
+        public async Task<ActionResult<IEnumerable<CouponsPageDTO>>> GetCoupons()
         {
             var coupons = await _context.Coupons
                 .Where(t => t.IsVisible == 1 && t.IsArchived == 0)
                 .OrderBy(t => t.Order)
                 .ToListAsync();
 
-            var couponDTOs = new List<CouponDTO>();
+            var couponsWithTags = new List<CouponDTO>();
             foreach (var coupon in coupons)
             {
                 var tagCouponPivots = await _context.TagCouponPivot
@@ -48,10 +48,16 @@ namespace cms_bd.Controllers
                     tags.Add(new TagDTO(tag));
                 }
 
-                couponDTOs.Add(new CouponDTO(coupon, tags));
+                couponsWithTags.Add(new CouponDTO(coupon, tags));
             }
 
-            return couponDTOs;
+            var temp = await _context.Tags
+                .Where(t => t.IsArchived == 0)
+                .ToListAsync();
+
+            var allTags = temp.Select(t => new TagDTO(t)).ToList();
+
+            return Ok(new CouponsPageDTO(couponsWithTags, allTags));
         }
 
         // GET: api/coupons/5
