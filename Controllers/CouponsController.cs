@@ -12,7 +12,7 @@ using cms_bd.Models;
 
 namespace cms_bd.Controllers
 {
-    [Route("api/coupons")]
+    [Route("api")]
     [ApiController]
     public class CouponsController : ControllerBase
     {
@@ -24,8 +24,8 @@ namespace cms_bd.Controllers
         }
 
         // GET: api/coupons
-        [HttpGet]
-        public async Task<ActionResult<IEnumerable<CouponsPageDTO>>> GetCoupons()
+        [HttpGet("coupons-page")]
+        public async Task<ActionResult<IEnumerable<CouponsPageDTO>>> GetCouponsPage()
         {
             var coupons = await _context.Coupons
                 .Where(t => t.IsVisible == 1 && t.IsArchived == 0)
@@ -72,69 +72,6 @@ namespace cms_bd.Controllers
             }
 
             return Ok(new CouponDetailsDTO(coupon));
-        }
-
-        // PUT: api/Coupons/5
-        // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
-        [HttpPut("{id}")]
-        public async Task<IActionResult> PutCoupon(int id, Coupon coupon)
-        {
-            if (id != coupon.ID)
-            {
-                return BadRequest();
-            }
-
-            _context.Entry(coupon).State = EntityState.Modified;
-
-            try
-            {
-                await _context.SaveChangesAsync();
-            }
-            catch (DbUpdateConcurrencyException)
-            {
-                if (!CouponExists(id))
-                {
-                    return NotFound();
-                }
-                else
-                {
-                    throw;
-                }
-            }
-
-            return NoContent();
-        }
-
-        // POST: api/Coupons
-        // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
-        [HttpPost]
-        public async Task<ActionResult<Coupon>> PostCoupon(Coupon coupon)
-        {
-            _context.Coupons.Add(coupon);
-            await _context.SaveChangesAsync();
-
-            return CreatedAtAction("GetCoupon", new { id = coupon.ID }, coupon);
-        }
-
-        // DELETE: api/Coupons/5
-        [HttpDelete("{id}")]
-        public async Task<IActionResult> DeleteCoupon(int id)
-        {
-            var coupon = await _context.Coupons.FindAsync(id);
-            if (coupon == null)
-            {
-                return NotFound();
-            }
-
-            _context.Coupons.Remove(coupon);
-            await _context.SaveChangesAsync();
-
-            return NoContent();
-        }
-
-        private bool CouponExists(int id)
-        {
-            return _context.Coupons.Any(e => e.ID == id);
         }
     }
 }
