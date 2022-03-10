@@ -36,6 +36,7 @@ namespace cms_bd.Data
             {
                 new() { Key = "BackgroundImage", Value = "mainpage.jpg", UpdatedBy = 1 },
                 new() { Key = "BackgroundColor", Value = "#ffffff", UpdatedBy = 1 },
+                new() { Key = "ContentTitle", Value = "Example content title", UpdatedBy = 1 },
             };
             context.Config.AddRange(config);
             context.SaveChanges();
