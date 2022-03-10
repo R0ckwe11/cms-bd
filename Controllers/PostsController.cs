@@ -7,11 +7,12 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using cms_bd.Data;
+using cms_bd.DTOs;
 using cms_bd.Models;
 
 namespace cms_bd.Controllers
 {
-    [Route("api/[controller]")]
+    [Route("api/posts")]
     [ApiController]
     public class PostsController : ControllerBase
     {
@@ -29,9 +30,9 @@ namespace cms_bd.Controllers
             return await _context.Posts.ToListAsync();
         }
 
-        // GET: api/Posts/5
+        // GET: api/posts/5
         [HttpGet("{id}")]
-        public async Task<ActionResult<Post>> GetPost(int id)
+        public async Task<ActionResult<PostDTO>> GetPost(int id)
         {
             var post = await _context.Posts.FindAsync(id);
 
@@ -40,7 +41,7 @@ namespace cms_bd.Controllers
                 return NotFound();
             }
 
-            return post;
+            return Ok(new PostDTO(post));
         }
 
         // PUT: api/Posts/5

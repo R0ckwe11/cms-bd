@@ -7,11 +7,12 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using cms_bd.Data;
+using cms_bd.DTOs;
 using cms_bd.Models;
 
 namespace cms_bd.Controllers
 {
-    [Route("api/[controller]")]
+    [Route("api/coupons")]
     [ApiController]
     public class CouponsController : ControllerBase
     {
@@ -22,11 +23,35 @@ namespace cms_bd.Controllers
             _context = context;
         }
 
-        // GET: api/Coupons
+        // GET: api/coupons
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<Coupon>>> GetCoupons()
+        public async Task<ActionResult<IEnumerable<CouponDTO>>> GetCoupons()
         {
-            return await _context.Coupons.ToListAsync();
+            var coupons = await _context.Coupons
+                .Where(t => t.IsVisible == 1 && t.IsArchived == 0)
+                .OrderBy(t => t.Order)
+                .ToListAsync();
+
+            var couponDTOs = new List<CouponDTO>();
+            foreach (var coupon in coupons)
+            {
+                var tagCouponPivots = await _context.TagCouponPivot
+                    .Where(t => t.CouponID == coupon.ID)
+                    .ToListAsync();
+                
+                var tags = new List<TagDTO>();
+                foreach (var tagCouponPivot in tagCouponPivots)
+                {
+                    var tag = await _context.Tags
+                        .Where(t => t.ID == tagCouponPivot.TagID)
+                        .FirstOrDefaultAsync();
+                    tags.Add(new TagDTO(tag));
+                }
+
+                couponDTOs.Add(new CouponDTO(coupon, tags));
+            }
+
+            return couponDTOs;
         }
 
         // GET: api/Coupons/5

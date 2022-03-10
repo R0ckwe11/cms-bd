@@ -7,11 +7,12 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using cms_bd.Data;
+using cms_bd.DTOs;
 using cms_bd.Models;
 
 namespace cms_bd.Controllers
 {
-    [Route("api/[controller]")]
+    [Route("api/")]
     [ApiController]
     public class ConfigsController : ControllerBase
     {
@@ -20,6 +21,35 @@ namespace cms_bd.Controllers
         public ConfigsController(DataContext context)
         {
             _context = context;
+        }
+
+        // GET: api/main
+        [HttpGet("main")]
+        public async Task<ActionResult<MainPageDTO>> GetMainPage()
+        {
+            var backgroundImage = await _context.Config
+                .FirstOrDefaultAsync(t => t.Key == "BackgroundImage");
+
+            var backgroundColor = await _context.Config
+                .FirstOrDefaultAsync(t => t.Key == "BackgroundColor");
+
+            var activePosts = await _context.Posts
+                .Where(t => t.IsVisible == 1)
+                .OrderBy(t => t.Order)
+                .ToListAsync();
+
+            // List<Image> activePostsImages;
+            // foreach (var ap in activePosts)
+            // {
+            //     activePosts.Add(_context.Images.Include(task => task.FileName));
+            // }
+
+            var menuPosts = await _context.Posts
+                .Where(t => t.IsVisible == 1 && t.IsInMenu == 1)
+                .OrderBy(t => t.Order)
+                .ToListAsync();
+
+            return Ok(new MainPageDTO(backgroundImage, backgroundColor, activePosts, menuPosts));
         }
 
         // GET: api/Configs
