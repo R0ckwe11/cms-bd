@@ -9,19 +9,22 @@ namespace cms_bd.Models
         [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int ID { get; set; }
-        public string Title { get; set; }
-        public string Photo { get; set; }
-        public string Content { get; set; }
+        public string? Title { get; set; }
+        public string? Icon { get; set; }
+        public int ImageID { get; set; }
+        public string? Content { get; set; }
         public int IsVisible { get; set; }
+        public int IsInMenu { get; set; }
         public int Order { get; set; }
-        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
-        public DateTime CreatedAt { get; set; }
-        public int CreatedBy { get; set; }
         [DatabaseGenerated(DatabaseGeneratedOption.Computed)]
         public DateTime UpdatedAt { get; set; }
         public int UpdatedBy { get; set; }
 
-        public virtual User UserCreating { get; set; }
+        [ForeignKey(nameof(ImageID))]
+        [InverseProperty("Posts")]
+        public virtual Image ImageSet { get; set; }
+        [ForeignKey(nameof(UpdatedBy))]
+        [InverseProperty("PostsUpdated")]
         public virtual User UserUpdating { get; set; }
     }
 }

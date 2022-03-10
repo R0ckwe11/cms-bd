@@ -30,13 +30,14 @@ namespace cms_bd.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("ID"), 1L, 1);
 
-                    b.Property<string>("Type")
+                    b.Property<string>("Key")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<DateTime>("UpdatedAt")
                         .ValueGeneratedOnAddOrUpdate()
-                        .HasColumnType("datetime2");
+                        .HasColumnType("datetime2")
+                        .HasDefaultValueSql("CURRENT_TIMESTAMP");
 
                     b.Property<int>("UpdatedBy")
                         .HasColumnType("int");
@@ -61,19 +62,13 @@ namespace cms_bd.Migrations
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("ID"), 1L, 1);
 
                     b.Property<string>("Code")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
-
-                    b.Property<DateTime>("CreatedAt")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("datetime2");
-
-                    b.Property<int>("CreatedBy")
-                        .HasColumnType("int");
 
                     b.Property<string>("Description")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("ImageID")
+                        .HasColumnType("int");
 
                     b.Property<int>("IsArchived")
                         .HasColumnType("int");
@@ -84,17 +79,13 @@ namespace cms_bd.Migrations
                     b.Property<int>("Order")
                         .HasColumnType("int");
 
-                    b.Property<string>("Photo")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
                     b.Property<string>("Title")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<DateTime>("UpdatedAt")
                         .ValueGeneratedOnAddOrUpdate()
-                        .HasColumnType("datetime2");
+                        .HasColumnType("datetime2")
+                        .HasDefaultValueSql("CURRENT_TIMESTAMP");
 
                     b.Property<int>("UpdatedBy")
                         .HasColumnType("int");
@@ -107,11 +98,38 @@ namespace cms_bd.Migrations
 
                     b.HasKey("ID");
 
-                    b.HasIndex("CreatedBy");
+                    b.HasIndex("ImageID");
 
                     b.HasIndex("UpdatedBy");
 
                     b.ToTable("Coupons");
+                });
+
+            modelBuilder.Entity("cms_bd.Models.Image", b =>
+                {
+                    b.Property<int>("ID")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("ID"), 1L, 1);
+
+                    b.Property<DateTime>("CreatedAt")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("datetime2")
+                        .HasDefaultValueSql("CURRENT_TIMESTAMP");
+
+                    b.Property<int>("CreatedBy")
+                        .HasColumnType("int");
+
+                    b.Property<string>("FileName")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("ID");
+
+                    b.HasIndex("CreatedBy");
+
+                    b.ToTable("Images");
                 });
 
             modelBuilder.Entity("cms_bd.Models.Post", b =>
@@ -123,14 +141,15 @@ namespace cms_bd.Migrations
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("ID"), 1L, 1);
 
                     b.Property<string>("Content")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<DateTime>("CreatedAt")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("datetime2");
+                    b.Property<string>("Icon")
+                        .HasColumnType("nvarchar(max)");
 
-                    b.Property<int>("CreatedBy")
+                    b.Property<int>("ImageID")
+                        .HasColumnType("int");
+
+                    b.Property<int>("IsInMenu")
                         .HasColumnType("int");
 
                     b.Property<int>("IsVisible")
@@ -139,24 +158,20 @@ namespace cms_bd.Migrations
                     b.Property<int>("Order")
                         .HasColumnType("int");
 
-                    b.Property<string>("Photo")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
                     b.Property<string>("Title")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<DateTime>("UpdatedAt")
                         .ValueGeneratedOnAddOrUpdate()
-                        .HasColumnType("datetime2");
+                        .HasColumnType("datetime2")
+                        .HasDefaultValueSql("CURRENT_TIMESTAMP");
 
                     b.Property<int>("UpdatedBy")
                         .HasColumnType("int");
 
                     b.HasKey("ID");
 
-                    b.HasIndex("CreatedBy");
+                    b.HasIndex("ImageID");
 
                     b.HasIndex("UpdatedBy");
 
@@ -171,30 +186,21 @@ namespace cms_bd.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("ID"), 1L, 1);
 
-                    b.Property<DateTime>("CreatedAt")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("datetime2");
-
-                    b.Property<int>("CreatedBy")
-                        .HasColumnType("int");
-
                     b.Property<int>("IsArchived")
                         .HasColumnType("int");
 
-                    b.Property<string>("Title")
-                        .IsRequired()
+                    b.Property<string>("Name")
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<DateTime>("UpdatedAt")
                         .ValueGeneratedOnAddOrUpdate()
-                        .HasColumnType("datetime2");
+                        .HasColumnType("datetime2")
+                        .HasDefaultValueSql("CURRENT_TIMESTAMP");
 
                     b.Property<int>("UpdatedBy")
                         .HasColumnType("int");
 
                     b.HasKey("ID");
-
-                    b.HasIndex("CreatedBy");
 
                     b.HasIndex("UpdatedBy");
 
@@ -237,7 +243,8 @@ namespace cms_bd.Migrations
 
                     b.Property<DateTime>("UsedAt")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("datetime2");
+                        .HasColumnType("datetime2")
+                        .HasDefaultValueSql("CURRENT_TIMESTAMP");
 
                     b.Property<int>("UserID")
                         .HasColumnType("int");
@@ -261,14 +268,17 @@ namespace cms_bd.Migrations
 
                     b.Property<DateTime>("CreatedAt")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("datetime2");
+                        .HasColumnType("datetime2")
+                        .HasDefaultValueSql("CURRENT_TIMESTAMP");
 
                     b.Property<string>("Email")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<DateTime?>("LastLogin")
-                        .HasColumnType("datetime2");
+                    b.Property<DateTime>("LastLogin")
+                        .ValueGeneratedOnAddOrUpdate()
+                        .HasColumnType("datetime2")
+                        .HasDefaultValueSql("CURRENT_TIMESTAMP");
 
                     b.Property<string>("Name")
                         .IsRequired()
@@ -283,7 +293,8 @@ namespace cms_bd.Migrations
 
                     b.Property<DateTime>("UpdatedAt")
                         .ValueGeneratedOnAddOrUpdate()
-                        .HasColumnType("datetime2");
+                        .HasColumnType("datetime2")
+                        .HasDefaultValueSql("CURRENT_TIMESTAMP");
 
                     b.HasKey("ID");
 
@@ -295,7 +306,7 @@ namespace cms_bd.Migrations
                     b.HasOne("cms_bd.Models.User", "UserUpdating")
                         .WithMany("ConfigsUpdated")
                         .HasForeignKey("UpdatedBy")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.NoAction)
                         .IsRequired();
 
                     b.Navigation("UserUpdating");
@@ -303,9 +314,9 @@ namespace cms_bd.Migrations
 
             modelBuilder.Entity("cms_bd.Models.Coupon", b =>
                 {
-                    b.HasOne("cms_bd.Models.User", "UserCreating")
-                        .WithMany("CouponsCreated")
-                        .HasForeignKey("CreatedBy")
+                    b.HasOne("cms_bd.Models.Image", "ImageSet")
+                        .WithMany("Coupons")
+                        .HasForeignKey("ImageID")
                         .OnDelete(DeleteBehavior.NoAction)
                         .IsRequired();
 
@@ -315,16 +326,27 @@ namespace cms_bd.Migrations
                         .OnDelete(DeleteBehavior.NoAction)
                         .IsRequired();
 
-                    b.Navigation("UserCreating");
+                    b.Navigation("ImageSet");
 
                     b.Navigation("UserUpdating");
                 });
 
-            modelBuilder.Entity("cms_bd.Models.Post", b =>
+            modelBuilder.Entity("cms_bd.Models.Image", b =>
                 {
                     b.HasOne("cms_bd.Models.User", "UserCreating")
-                        .WithMany("PostsCreated")
+                        .WithMany("ImagesCreated")
                         .HasForeignKey("CreatedBy")
+                        .OnDelete(DeleteBehavior.NoAction)
+                        .IsRequired();
+
+                    b.Navigation("UserCreating");
+                });
+
+            modelBuilder.Entity("cms_bd.Models.Post", b =>
+                {
+                    b.HasOne("cms_bd.Models.Image", "ImageSet")
+                        .WithMany("Posts")
+                        .HasForeignKey("ImageID")
                         .OnDelete(DeleteBehavior.NoAction)
                         .IsRequired();
 
@@ -334,26 +356,18 @@ namespace cms_bd.Migrations
                         .OnDelete(DeleteBehavior.NoAction)
                         .IsRequired();
 
-                    b.Navigation("UserCreating");
+                    b.Navigation("ImageSet");
 
                     b.Navigation("UserUpdating");
                 });
 
             modelBuilder.Entity("cms_bd.Models.Tag", b =>
                 {
-                    b.HasOne("cms_bd.Models.User", "UserCreating")
-                        .WithMany("TagsCreated")
-                        .HasForeignKey("CreatedBy")
-                        .OnDelete(DeleteBehavior.NoAction)
-                        .IsRequired();
-
                     b.HasOne("cms_bd.Models.User", "UserUpdating")
                         .WithMany("TagsUpdated")
                         .HasForeignKey("UpdatedBy")
                         .OnDelete(DeleteBehavior.NoAction)
                         .IsRequired();
-
-                    b.Navigation("UserCreating");
 
                     b.Navigation("UserUpdating");
                 });
@@ -363,13 +377,13 @@ namespace cms_bd.Migrations
                     b.HasOne("cms_bd.Models.Coupon", "CouponPivot")
                         .WithMany("TagCouponPivots")
                         .HasForeignKey("CouponID")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.NoAction)
                         .IsRequired();
 
                     b.HasOne("cms_bd.Models.Tag", "TagPivot")
                         .WithMany("TagCouponPivots")
                         .HasForeignKey("TagID")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.NoAction)
                         .IsRequired();
 
                     b.Navigation("CouponPivot");
@@ -382,13 +396,13 @@ namespace cms_bd.Migrations
                     b.HasOne("cms_bd.Models.Coupon", "CouponUsed")
                         .WithMany("UsedBy")
                         .HasForeignKey("CouponID")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.NoAction)
                         .IsRequired();
 
                     b.HasOne("cms_bd.Models.User", "UserUsing")
                         .WithMany("UsedCoupons")
                         .HasForeignKey("UserID")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.NoAction)
                         .IsRequired();
 
                     b.Navigation("CouponUsed");
@@ -403,6 +417,13 @@ namespace cms_bd.Migrations
                     b.Navigation("UsedBy");
                 });
 
+            modelBuilder.Entity("cms_bd.Models.Image", b =>
+                {
+                    b.Navigation("Coupons");
+
+                    b.Navigation("Posts");
+                });
+
             modelBuilder.Entity("cms_bd.Models.Tag", b =>
                 {
                     b.Navigation("TagCouponPivots");
@@ -412,15 +433,11 @@ namespace cms_bd.Migrations
                 {
                     b.Navigation("ConfigsUpdated");
 
-                    b.Navigation("CouponsCreated");
-
                     b.Navigation("CouponsUpdated");
 
-                    b.Navigation("PostsCreated");
+                    b.Navigation("ImagesCreated");
 
                     b.Navigation("PostsUpdated");
-
-                    b.Navigation("TagsCreated");
 
                     b.Navigation("TagsUpdated");
 

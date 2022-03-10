@@ -9,13 +9,14 @@ namespace cms_bd.Models
         [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int ID { get; set; }
+        public string Key { get; set; }
         public string Value { get; set; }
-        public string Type { get; set; }
         [DatabaseGenerated(DatabaseGeneratedOption.Computed)]
         public DateTime UpdatedAt { get; set; }
-        [ForeignKey("UserUpdating")]
         public int UpdatedBy { get; set; }
 
+        [ForeignKey(nameof(UpdatedBy))]
+        [InverseProperty("ConfigsUpdated")]
         public virtual User UserUpdating { get; set; }
     }
 }

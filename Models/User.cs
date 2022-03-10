@@ -14,18 +14,23 @@ namespace cms_bd.Models
         public string Password { get; set; }
         public int Role { get; set; }
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
-        public DateTime CreatedAt { get; set; } = DateTime.Now;
+        public DateTime CreatedAt { get; set; }
         [DatabaseGenerated(DatabaseGeneratedOption.Computed)]
-        public DateTime UpdatedAt { get; set; } = DateTime.Now;
-        public DateTime? LastLogin { get; set; }
+        public DateTime UpdatedAt { get; set; }
+        [DatabaseGenerated(DatabaseGeneratedOption.Computed)]
+        public DateTime LastLogin { get; set; }
 
+        [InverseProperty(nameof(Config.UserUpdating))]
         public virtual ICollection<Config> ConfigsUpdated { get; set; }
-        public virtual ICollection<Coupon> CouponsCreated { get; set; }
+        [InverseProperty(nameof(Coupon.UserUpdating))]
         public virtual ICollection<Coupon> CouponsUpdated { get; set; }
-        public virtual ICollection<Post> PostsCreated { get; set; }
+        [InverseProperty(nameof(Image.UserCreating))]
+        public virtual ICollection<Image> ImagesCreated { get; set; }
+        [InverseProperty(nameof(Post.UserUpdating))]
         public virtual ICollection<Post> PostsUpdated { get; set; }
-        public virtual ICollection<Tag> TagsCreated { get; set; }
+        [InverseProperty(nameof(Tag.UserUpdating))]
         public virtual ICollection<Tag> TagsUpdated { get; set; }
+        [InverseProperty(nameof(UsedCoupon.UserUsing))]
         public virtual ICollection<UsedCoupon> UsedCoupons { get; set; }
     }
 }

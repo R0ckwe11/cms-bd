@@ -9,12 +9,14 @@ namespace cms_bd.Models
         [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int ID { get; set; }
-        [ForeignKey("CouponPivot")]
         public int CouponID { get; set; }
-        [ForeignKey("TagPivot")]
         public int TagID { get; set; }
 
+        [ForeignKey(nameof(CouponID))]
+        [InverseProperty("TagCouponPivots")]
         public virtual Coupon CouponPivot { get; set; }
+        [ForeignKey(nameof(TagID))]
+        [InverseProperty("TagCouponPivots")]
         public virtual Tag TagPivot { get; set; }
     }
 }
