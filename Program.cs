@@ -1,4 +1,5 @@
 using cms_bd.Data;
+using DotNetEd.CoreAdmin;
 using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -23,13 +24,16 @@ builder.Services.AddCors(options =>
     options.AddPolicy(name: myAllowSpecificOrigins,
         builder =>
         {
-            builder.WithOrigins("http://localhost:4200")
+            builder.WithOrigins("http://localhost:8100")
                 .AllowAnyMethod()
                 .AllowAnyHeader();
         });
 });
 
-builder.Services.AddCoreAdmin();
+builder.Services.AddCoreAdmin(new CoreAdminOptions()
+{
+    IgnoreEntityTypes = new List<Type>() { typeof(DateTime) }
+});
 
 var app = builder.Build();
 
@@ -38,6 +42,17 @@ if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();
     app.UseSwaggerUI();
+}
+
+using (var scope = app.Services.CreateScope())
+{
+    var services = scope.ServiceProvider;
+
+    var context = services.GetRequiredService<DataContext>();
+    context.Database.EnsureCreated();
+    var databaseClean = DbInitializer.InitializeDefaultUser(context);
+    // DbInitializer.AddImageDirectoryMetadata(context);
+    if (databaseClean) DbInitializer.Initialize(context);
 }
 
 app.UseHttpsRedirection();
