@@ -33,6 +33,9 @@ namespace cms_bd.Controllers
             var backgroundColor = await _context.Config
                 .FirstOrDefaultAsync(t => t.Key == "BackgroundColor");
 
+            var contentTitle = await _context.Config
+                .FirstOrDefaultAsync(t => t.Key == "ContentTitle");
+
             var activePosts = await _context.Posts
                 .Where(t => t.IsVisible == 1)
                 .OrderBy(t => t.Order)
@@ -49,7 +52,7 @@ namespace cms_bd.Controllers
                 .OrderBy(t => t.Order)
                 .ToListAsync();
 
-            return Ok(new MainPageDTO(backgroundImage, backgroundColor, activePosts, menuPosts));
+            return Ok(new MainPageDTO(backgroundImage, backgroundColor, contentTitle, activePosts, menuPosts));
         }
 
         // GET: api/Configs
