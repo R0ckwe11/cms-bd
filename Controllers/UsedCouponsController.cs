@@ -25,17 +25,24 @@ namespace cms_bd.Controllers
 
         // POST: api/used-coupons/5/1
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
-        [HttpPost("used-coupons/{couponID}")]
-        public async Task<ActionResult<UsedCouponDTO>> UseCoupon(int couponID, int userID = 1)
+        [HttpGet("coupon-code/{id}")]
+        public async Task<ActionResult<CouponCodeDTO>> UseCoupon(int id)
         {
+            var coupon = await _context.Coupons
+                .FirstOrDefaultAsync(t => t.ID == id);
+            if (coupon == null)
+            {
+                return NotFound();
+            }
+
             var usedCoupon = _context.UsedCoupons.Add(new UsedCoupon()
             {
-                CouponID = couponID,
-                UserID = userID
+                CouponID = id,
+                UserID = 1
             }).Entity;
             await _context.SaveChangesAsync();
 
-            return Ok(new UsedCouponDTO(usedCoupon));
+            return Ok(new CouponCodeDTO(coupon));
         }
     }
 }
