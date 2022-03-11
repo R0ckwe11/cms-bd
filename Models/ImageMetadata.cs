@@ -3,8 +3,8 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace cms_bd.Models
 {
-    [Table("Images")]
-    public class Image
+    [Table("ImageMetadata")]
+    public class ImageMetadata
     {
         [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
@@ -18,9 +18,9 @@ namespace cms_bd.Models
         [InverseProperty("ImagesCreated")]
         public virtual User UserCreating { get; set; }
 
-        [InverseProperty(nameof(Coupon.ImageSet))]
+        [InverseProperty(nameof(Coupon.ImageMetadataSet))]
         public virtual ICollection<Coupon> Coupons { get; set; }
-        [InverseProperty(nameof(Post.ImageSet))]
+        [InverseProperty(nameof(Post.ImageMetadataSet))]
         public virtual ICollection<Post> Posts { get; set; }
     }
 }

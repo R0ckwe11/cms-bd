@@ -17,7 +17,7 @@ namespace cms_bd.Migrations
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("ProductVersion", "6.0.2")
+                .HasAnnotation("ProductVersion", "6.0.3")
                 .HasAnnotation("Relational:MaxIdentifierLength", 128);
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder, 1L, 1);
@@ -105,7 +105,7 @@ namespace cms_bd.Migrations
                     b.ToTable("Coupons");
                 });
 
-            modelBuilder.Entity("cms_bd.Models.Image", b =>
+            modelBuilder.Entity("cms_bd.Models.ImageMetadata", b =>
                 {
                     b.Property<int>("ID")
                         .ValueGeneratedOnAdd()
@@ -129,7 +129,7 @@ namespace cms_bd.Migrations
 
                     b.HasIndex("CreatedBy");
 
-                    b.ToTable("Images");
+                    b.ToTable("ImageMetadata");
                 });
 
             modelBuilder.Entity("cms_bd.Models.Post", b =>
@@ -314,7 +314,7 @@ namespace cms_bd.Migrations
 
             modelBuilder.Entity("cms_bd.Models.Coupon", b =>
                 {
-                    b.HasOne("cms_bd.Models.Image", "ImageSet")
+                    b.HasOne("cms_bd.Models.ImageMetadata", "ImageMetadataSet")
                         .WithMany("Coupons")
                         .HasForeignKey("ImageID")
                         .OnDelete(DeleteBehavior.NoAction)
@@ -326,12 +326,12 @@ namespace cms_bd.Migrations
                         .OnDelete(DeleteBehavior.NoAction)
                         .IsRequired();
 
-                    b.Navigation("ImageSet");
+                    b.Navigation("ImageMetadataSet");
 
                     b.Navigation("UserUpdating");
                 });
 
-            modelBuilder.Entity("cms_bd.Models.Image", b =>
+            modelBuilder.Entity("cms_bd.Models.ImageMetadata", b =>
                 {
                     b.HasOne("cms_bd.Models.User", "UserCreating")
                         .WithMany("ImagesCreated")
@@ -344,7 +344,7 @@ namespace cms_bd.Migrations
 
             modelBuilder.Entity("cms_bd.Models.Post", b =>
                 {
-                    b.HasOne("cms_bd.Models.Image", "ImageSet")
+                    b.HasOne("cms_bd.Models.ImageMetadata", "ImageMetadataSet")
                         .WithMany("Posts")
                         .HasForeignKey("ImageID")
                         .OnDelete(DeleteBehavior.NoAction)
@@ -356,7 +356,7 @@ namespace cms_bd.Migrations
                         .OnDelete(DeleteBehavior.NoAction)
                         .IsRequired();
 
-                    b.Navigation("ImageSet");
+                    b.Navigation("ImageMetadataSet");
 
                     b.Navigation("UserUpdating");
                 });
@@ -417,7 +417,7 @@ namespace cms_bd.Migrations
                     b.Navigation("UsedBy");
                 });
 
-            modelBuilder.Entity("cms_bd.Models.Image", b =>
+            modelBuilder.Entity("cms_bd.Models.ImageMetadata", b =>
                 {
                     b.Navigation("Coupons");
 

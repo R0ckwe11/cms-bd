@@ -1,4 +1,5 @@
 ﻿using cms_bd.Models;
+using Microsoft.EntityFrameworkCore;
 
 namespace cms_bd.Data
 {
@@ -23,14 +24,14 @@ namespace cms_bd.Data
 
         public static void Initialize(DataContext context)
         {
-            var images = new Image[]
-            {
-                new() { FileName = "mainpage.jpg", CreatedBy = 1 },
-                new() { FileName = "coupon.jpg", CreatedBy = 1 },
-                new() { FileName = "post.jpg", CreatedBy = 1 },
-            };
-            context.Images.AddRange(images);
-            context.SaveChanges();
+            // var images = new ImageMetadata[]
+            // {
+            //     new() { FileName = "mainpage.jpg", CreatedBy = 1 },
+            //     new() { FileName = "coupon.jpg", CreatedBy = 1 },
+            //     new() { FileName = "post.jpg", CreatedBy = 1 },
+            // };
+            // context.ImageMetadata.AddRange(images);
+            // context.SaveChanges();
 
             var config = new Config[]
             {
@@ -86,9 +87,8 @@ namespace cms_bd.Data
             context.SaveChanges();
         }
 
-        public static void AddImageDirectoryMetadata(DataContext context)
+        public static void UpdateImageDirectoryMetadata(DataContext context)
         {
-
             var folderName = Path.Combine("resources", "images");
             var pathToRead = Path.Combine(Directory.GetCurrentDirectory(), folderName);
             if (!Directory.Exists(pathToRead))
@@ -97,16 +97,26 @@ namespace cms_bd.Data
                 return;
             }
 
-            var photos = Directory.EnumerateFiles(pathToRead)
+            var files = Directory.EnumerateFiles(pathToRead)
                 .Where(IsAPhotoFile)
                 .Select(Path.GetFileName);
-            var images = new Image[] { };
-            images = photos.Aggregate(images, (current, p) => current.Append(new Image { FileName = p, CreatedBy = 1 }).ToArray());
-            context.Images.AddRange(images);
+            var imageMetadata = context.ImageMetadata.ToListAsync().Result;
+
+            var toAdd = new ImageMetadata[] { };
+            toAdd = (
+                from file in files
+                let isDuplicate = imageMetadata.Any(f => f.FileName == file)
+                where !isDuplicate
+                select file
+                )
+                .Aggregate(toAdd, (current, file) =>
+                    current.Append(new ImageMetadata { FileName = file, CreatedBy = 1 }).ToArray());
+
+            context.ImageMetadata.AddRange(toAdd);
             context.SaveChanges();
         }
 
-        private static bool IsAPhotoFile(string fileName)
+        public static bool IsAPhotoFile(string fileName)
         {
             return fileName.EndsWith(".jpg", StringComparison.OrdinalIgnoreCase)
                    || fileName.EndsWith(".jpeg", StringComparison.OrdinalIgnoreCase)

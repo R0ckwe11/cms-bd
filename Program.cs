@@ -1,3 +1,4 @@
+using cms_bd;
 using cms_bd.Data;
 using DotNetEd.CoreAdmin;
 using Microsoft.EntityFrameworkCore;
@@ -35,6 +36,8 @@ builder.Services.AddCoreAdmin(new CoreAdminOptions()
     IgnoreEntityTypes = new List<Type>() { typeof(DateTime) }
 });
 
+builder.Services.AddHostedService<FileWatcher>();
+
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
@@ -51,7 +54,7 @@ using (var scope = app.Services.CreateScope())
     var context = services.GetRequiredService<DataContext>();
     context.Database.EnsureCreated();
     var databaseClean = DbInitializer.InitializeDefaultUser(context);
-    // DbInitializer.AddImageDirectoryMetadata(context);
+    DbInitializer.UpdateImageDirectoryMetadata(context);
     if (databaseClean) DbInitializer.Initialize(context);
 }
 

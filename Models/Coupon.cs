@@ -24,7 +24,7 @@ namespace cms_bd.Models
 
         [ForeignKey(nameof(ImageID))]
         [InverseProperty("Coupons")]
-        public virtual Image ImageSet { get; set; }
+        public virtual ImageMetadata ImageMetadataSet { get; set; }
         [ForeignKey(nameof(UpdatedBy))]
         [InverseProperty("CouponsUpdated")]
         public virtual User UserUpdating { get; set; }

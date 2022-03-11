@@ -9,7 +9,7 @@ namespace cms_bd.Data
 
         public DbSet<Config> Config { get; set; }
         public DbSet<Coupon> Coupons { get; set; }
-        public DbSet<Image> Images { get; set; }
+        public DbSet<ImageMetadata> ImageMetadata { get; set; }
         public DbSet<Post> Posts { get; set; }
         public DbSet<Tag> Tags { get; set; }
         public DbSet<TagCouponPivot> TagCouponPivot { get; set; }
@@ -25,7 +25,7 @@ namespace cms_bd.Data
                 .OnDelete(DeleteBehavior.NoAction);
 
             modelBuilder.Entity<Coupon>()
-                .HasOne(c => c.ImageSet)
+                .HasOne(c => c.ImageMetadataSet)
                 .WithMany(i => i.Coupons)
                 .HasForeignKey(c => c.ImageID)
                 .OnDelete(DeleteBehavior.NoAction);
@@ -36,14 +36,14 @@ namespace cms_bd.Data
                 .HasForeignKey(c => c.UpdatedBy)
                 .OnDelete(DeleteBehavior.NoAction);
 
-            modelBuilder.Entity<Image>()
+            modelBuilder.Entity<ImageMetadata>()
                 .HasOne(i => i.UserCreating)
                 .WithMany(u => u.ImagesCreated)
                 .HasForeignKey(i => i.CreatedBy)
                 .OnDelete(DeleteBehavior.NoAction);
 
             modelBuilder.Entity<Post>()
-                .HasOne(p => p.ImageSet)
+                .HasOne(p => p.ImageMetadataSet)
                 .WithMany(i => i.Posts)
                 .HasForeignKey(p => p.ImageID)
                 .OnDelete(DeleteBehavior.NoAction);
@@ -92,7 +92,7 @@ namespace cms_bd.Data
                 .Property(c => c.UpdatedAt)
                 .HasDefaultValueSql("CURRENT_TIMESTAMP");
 
-            modelBuilder.Entity<Image>()
+            modelBuilder.Entity<ImageMetadata>()
                 .Property(i => i.CreatedAt)
                 .HasDefaultValueSql("CURRENT_TIMESTAMP");
 

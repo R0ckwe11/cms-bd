@@ -50,7 +50,7 @@ namespace cms_bd.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "Images",
+                name: "ImageMetadata",
                 columns: table => new
                 {
                     ID = table.Column<int>(type: "int", nullable: false)
@@ -61,9 +61,9 @@ namespace cms_bd.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Images", x => x.ID);
+                    table.PrimaryKey("PK_ImageMetadata", x => x.ID);
                     table.ForeignKey(
-                        name: "FK_Images_Users_CreatedBy",
+                        name: "FK_ImageMetadata_Users_CreatedBy",
                         column: x => x.CreatedBy,
                         principalTable: "Users",
                         principalColumn: "ID");
@@ -112,9 +112,9 @@ namespace cms_bd.Migrations
                 {
                     table.PrimaryKey("PK_Coupons", x => x.ID);
                     table.ForeignKey(
-                        name: "FK_Coupons_Images_ImageID",
+                        name: "FK_Coupons_ImageMetadata_ImageID",
                         column: x => x.ImageID,
-                        principalTable: "Images",
+                        principalTable: "ImageMetadata",
                         principalColumn: "ID");
                     table.ForeignKey(
                         name: "FK_Coupons_Users_UpdatedBy",
@@ -143,9 +143,9 @@ namespace cms_bd.Migrations
                 {
                     table.PrimaryKey("PK_Posts", x => x.ID);
                     table.ForeignKey(
-                        name: "FK_Posts_Images_ImageID",
+                        name: "FK_Posts_ImageMetadata_ImageID",
                         column: x => x.ImageID,
-                        principalTable: "Images",
+                        principalTable: "ImageMetadata",
                         principalColumn: "ID");
                     table.ForeignKey(
                         name: "FK_Posts_Users_UpdatedBy",
@@ -219,8 +219,8 @@ namespace cms_bd.Migrations
                 column: "UpdatedBy");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Images_CreatedBy",
-                table: "Images",
+                name: "IX_ImageMetadata_CreatedBy",
+                table: "ImageMetadata",
                 column: "CreatedBy");
 
             migrationBuilder.CreateIndex(
@@ -280,7 +280,7 @@ namespace cms_bd.Migrations
                 name: "Coupons");
 
             migrationBuilder.DropTable(
-                name: "Images");
+                name: "ImageMetadata");
 
             migrationBuilder.DropTable(
                 name: "Users");

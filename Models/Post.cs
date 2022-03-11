@@ -22,7 +22,7 @@ namespace cms_bd.Models
 
         [ForeignKey(nameof(ImageID))]
         [InverseProperty("Posts")]
-        public virtual Image ImageSet { get; set; }
+        public virtual ImageMetadata ImageMetadataSet { get; set; }
         [ForeignKey(nameof(UpdatedBy))]
         [InverseProperty("PostsUpdated")]
         public virtual User UserUpdating { get; set; }

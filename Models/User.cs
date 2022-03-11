@@ -24,8 +24,8 @@ namespace cms_bd.Models
         public virtual ICollection<Config> ConfigsUpdated { get; set; }
         [InverseProperty(nameof(Coupon.UserUpdating))]
         public virtual ICollection<Coupon> CouponsUpdated { get; set; }
-        [InverseProperty(nameof(Image.UserCreating))]
-        public virtual ICollection<Image> ImagesCreated { get; set; }
+        [InverseProperty(nameof(ImageMetadata.UserCreating))]
+        public virtual ICollection<ImageMetadata> ImagesCreated { get; set; }
         [InverseProperty(nameof(Post.UserUpdating))]
         public virtual ICollection<Post> PostsUpdated { get; set; }
         [InverseProperty(nameof(Tag.UserUpdating))]
