@@ -9,9 +9,11 @@ using Microsoft.EntityFrameworkCore;
 using cms_bd.Data;
 using cms_bd.DTOs;
 using cms_bd.Models;
+using Microsoft.AspNetCore.Authorization;
 
 namespace cms_bd.Controllers
 {
+    [Authorize]
     [Route("api")]
     [ApiController]
     public class CouponsController : ControllerBase

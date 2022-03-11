@@ -14,7 +14,7 @@ namespace cms_bd.Data
 
             var users = new User[]
             {
-                new() { Name = "admin", Email = "admin@admin.com", Password = "admin", Role = 1 },
+                new() { UserName = "admin", Email = "admin@admin.com" },
             };
             context.Users.AddRange(users);
             context.SaveChanges();

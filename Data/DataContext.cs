@@ -1,11 +1,36 @@
 ﻿using cms_bd.Models;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 
 namespace cms_bd.Data
 {
-    public class DataContext : DbContext
+    public class DataContext : IdentityDbContext<User, Role, int>
     {
-        public DataContext(DbContextOptions<DataContext> options) : base(options) { }
+        public DataContext(DbContextOptions<DataContext> options, IConfiguration configuration) : base(options)
+        {
+            Configuration = configuration;
+        }
+
+        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder) {
+            optionsBuilder.UseSqlServer(Configuration.GetConnectionString("DefaultConnection"));
+        }
+        private void SeedUsers(ModelBuilder builder)  
+        {  
+            var user = new User()  
+            {   
+                Id = 1,
+                UserName = "admin",
+                Email = "admin@admin.com",
+            };  
+  
+            var passwordHasher = new PasswordHasher<User>();  
+            passwordHasher.HashPassword(user, "admin");  
+  
+            builder.Entity<User>().HasData(user);  
+        }
+
+        public IConfiguration Configuration { get; }
 
         public DbSet<Config> Config { get; set; }
         public DbSet<Coupon> Coupons { get; set; }
@@ -14,10 +39,12 @@ namespace cms_bd.Data
         public DbSet<Tag> Tags { get; set; }
         public DbSet<TagCouponPivot> TagCouponPivot { get; set; }
         public DbSet<UsedCoupon> UsedCoupons { get; set; }
-        public DbSet<User> Users { get; set; }
+        // public DbSet<User> Users { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
+            base.OnModelCreating(modelBuilder);
+
             modelBuilder.Entity<Config>()
                 .HasOne(c => c.UserUpdating)
                 .WithMany(u => u.ConfigsUpdated)
@@ -119,6 +146,8 @@ namespace cms_bd.Data
             modelBuilder.Entity<User>()
                 .Property(u => u.LastLogin)
                 .HasDefaultValueSql("CURRENT_TIMESTAMP");
+
+            this.SeedUsers(modelBuilder);
         }
     }
 }
