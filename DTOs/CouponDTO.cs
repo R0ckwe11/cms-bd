@@ -5,13 +5,13 @@ namespace cms_bd.DTOs;
 public class CouponDTO
 {
     public int ID { get; set; }
-    public int ImageID { get; set; }
+    public string Image { get; set; }
     public IEnumerable<TagDTO> Tags { get; set; }
 
-    public CouponDTO(Coupon coupons, IEnumerable<TagDTO> tags)
+    public CouponDTO(Coupon coupons, ImageMetadata image, IEnumerable<TagDTO> tags)
     {
         ID = coupons.ID;
-        ImageID = coupons.ImageID;
+        Image = "https://localhost:5001/images/" + image.FileName;
         Tags = tags;
     }
 }

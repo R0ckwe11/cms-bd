@@ -35,6 +35,9 @@ namespace cms_bd.Controllers
             var couponsWithTags = new List<CouponDTO>();
             foreach (var coupon in coupons)
             {
+                var image = await _context.ImageMetadata
+                    .FirstOrDefaultAsync(t => t.ID == coupon.ImageID);
+
                 var tagCouponPivots = await _context.TagCouponPivot
                     .Where(t => t.CouponID == coupon.ID)
                     .ToListAsync();
@@ -48,7 +51,7 @@ namespace cms_bd.Controllers
                     tags.Add(new TagDTO(tag));
                 }
 
-                couponsWithTags.Add(new CouponDTO(coupon, tags));
+                couponsWithTags.Add(new CouponDTO(coupon, image, tags));
             }
 
             var temp = await _context.Tags
@@ -71,7 +74,11 @@ namespace cms_bd.Controllers
                 return NotFound();
             }
 
-            return Ok(new CouponDetailsDTO(coupon));
+            var image = await _context.ImageMetadata
+                .Where(t => t.ID == coupon.ImageID)
+                .FirstOrDefaultAsync();
+
+            return Ok(new CouponDetailsDTO(coupon, image));
         }
     }
 }

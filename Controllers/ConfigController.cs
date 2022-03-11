@@ -41,18 +41,30 @@ namespace cms_bd.Controllers
                 .OrderBy(t => t.Order)
                 .ToListAsync();
 
-            // List<Image> activePostsImages;
-            // foreach (var ap in activePosts)
-            // {
-            //     activePosts.Add(_context.Images.Include(task => task.FileName));
-            // }
+            var activePostsWithImages = new List<ActivePostsWithImages>();
+            foreach (var ap in activePosts)
+            {
+                var image = await _context.ImageMetadata
+                    .FirstOrDefaultAsync(t => t.ID == ap.ImageID);
+                activePostsWithImages.Add(new ActivePostsWithImages
+                {
+                    ID = ap.ID,
+                    Image = image.FileName
+                });
+            }
 
             var menuPosts = await _context.Posts
                 .Where(t => t.IsVisible == 1 && t.IsInMenu == 1)
                 .OrderBy(t => t.Order)
                 .ToListAsync();
 
-            return Ok(new MainPageDTO(backgroundImage, backgroundColor, contentTitle, activePosts, menuPosts));
+            return Ok(new MainPageDTO(backgroundImage, backgroundColor, contentTitle, activePostsWithImages, menuPosts));
         }
+    }
+
+    public class ActivePostsWithImages
+    {
+        public int ID;
+        public string Image;
     }
 }

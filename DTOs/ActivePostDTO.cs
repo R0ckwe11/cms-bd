@@ -5,11 +5,11 @@ namespace cms_bd.DTOs;
 public class ActivePostDTO
 {
     public int PostID { get; set; }
-    public int ImageID { get; set; }
+    public string Image { get; set; }
 
-    public ActivePostDTO(int ID, int imageID)
+    public ActivePostDTO(int ID, string image)
     {
         PostID = ID;
-        ImageID = imageID;
+        Image = "https://localhost:5001/images/" + image;
     }
 }

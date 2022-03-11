@@ -25,7 +25,7 @@ namespace cms_bd.Controllers
 
         // POST: api/used-coupons/5/1
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
-        [HttpPost("used-coupons/{couponID}/{userID}")]
+        [HttpPost("used-coupons/{couponID}")]
         public async Task<ActionResult<UsedCouponDTO>> UseCoupon(int couponID, int userID = 1)
         {
             var usedCoupon = _context.UsedCoupons.Add(new UsedCoupon()

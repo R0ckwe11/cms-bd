@@ -2,6 +2,7 @@ using cms_bd;
 using cms_bd.Data;
 using DotNetEd.CoreAdmin;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.FileProviders;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -60,6 +61,12 @@ using (var scope = app.Services.CreateScope())
 
 app.UseHttpsRedirection();
 app.UseStaticFiles();
+app.UseStaticFiles(new StaticFileOptions()
+{
+    FileProvider = new PhysicalFileProvider(
+        Path.Combine(Directory.GetCurrentDirectory(), @"resources\images")),
+    RequestPath = new PathString("/images")
+});
 
 app.UseCors(myAllowSpecificOrigins);
 

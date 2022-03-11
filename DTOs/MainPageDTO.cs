@@ -1,4 +1,5 @@
-﻿using cms_bd.Models;
+﻿using cms_bd.Controllers;
+using cms_bd.Models;
 
 namespace cms_bd.DTOs;
 
@@ -10,12 +11,12 @@ public class MainPageDTO
     public IEnumerable<ActivePostDTO>? ActivePosts { get; set; }
     public IEnumerable<MenuPostDTO>? MenuPosts { get; set; }
 
-    public MainPageDTO(Config backgroundImage, Config backgroundColor, Config contentTitle, IEnumerable<Post> activePosts, IEnumerable<Post> menuPosts)
+    public MainPageDTO(Config backgroundImage, Config backgroundColor, Config contentTitle, IEnumerable<ActivePostsWithImages> activePosts, IEnumerable<Post> menuPosts)
     {
-        BackgroundImage = backgroundImage.Value;
+        BackgroundImage = "https://localhost:5001/images/" + backgroundImage.Value;
         BackgroundColor = backgroundColor.Value;
         ContentTitle = contentTitle.Value;
-        ActivePosts = activePosts?.Select(activePost => new ActivePostDTO(activePost.ID, activePost.ImageID));
-        MenuPosts = menuPosts?.Select(menuPost => new MenuPostDTO(menuPost.ID, menuPost.Title, menuPost.Icon));
+        ActivePosts = activePosts.Select(activePosts => new ActivePostDTO(activePosts.ID, activePosts.Image));
+        MenuPosts = menuPosts.Select(menuPost => new MenuPostDTO(menuPost.ID, menuPost.Title, menuPost.Icon));
     }
 }
