@@ -58,8 +58,7 @@ namespace cms_bd.Controllers
             return Ok(new CouponsPageDTO(couponsWithTags, allTags));
         }
 
-        // GET: api/coupons/5
-        [Authorize]
+        // GET: api/coupon/5
         [HttpGet("coupon/{id}")]
         public async Task<ActionResult<CouponDetailsDTO>> GetCoupon(int id)
         {
