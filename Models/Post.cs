@@ -26,5 +26,10 @@ namespace cms_bd.Models
         [ForeignKey(nameof(UpdatedBy))]
         [InverseProperty("PostsUpdated")]
         public virtual User UserUpdating { get; set; }
+
+        public override string ToString()
+        {
+            return Title ?? "";
+        }
     }
 }

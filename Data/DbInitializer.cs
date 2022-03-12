@@ -1,37 +1,44 @@
 ﻿using cms_bd.Models;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 
 namespace cms_bd.Data
 {
     public static class DbInitializer
     {
-        public static bool InitializeDefaultUser(DataContext context)
+        public static async Task<bool> AddDefaultUser(DataContext context, UserManager<User> userManager)
         {
-            if (context.Users.Any())
+            if (context.Users.Any(t => t.UserName == "admin"))
             {
                 return false;
             }
 
-            var users = new User[]
+            var user = new User
             {
-                new() { UserName = "admin", Email = "admin@admin.com" },
+                UserName = "admin",
+                Email = "admin@admin.com"
             };
-            context.Users.AddRange(users);
-            context.SaveChanges();
 
-            return true;
+            var result = await userManager.CreateAsync(user, "admin");
+
+            return result == IdentityResult.Success;
         }
 
-        public static void Initialize(DataContext context)
+        public static void AddExampleData(DataContext context)
         {
-            // var images = new ImageMetadata[]
-            // {
-            //     new() { FileName = "mainpage.jpg", CreatedBy = 1 },
-            //     new() { FileName = "coupon.jpg", CreatedBy = 1 },
-            //     new() { FileName = "post.jpg", CreatedBy = 1 },
-            // };
-            // context.ImageMetadata.AddRange(images);
-            // context.SaveChanges();
+            var images = new ImageMetadata[]
+            {
+                new() { FileName = "mainpage.jpg", CreatedBy = 1 },
+                new() { FileName = "coupon.jpg", CreatedBy = 1 },
+                new() { FileName = "post.jpg", CreatedBy = 1 },
+            };
+            context.ImageMetadata.AddRange(images);
+            context.SaveChanges();
+
+            if (context.Config.Any())
+            {
+                return;
+            }
 
             var config = new Config[]
             {

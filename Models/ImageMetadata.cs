@@ -22,5 +22,10 @@ namespace cms_bd.Models
         public virtual ICollection<Coupon> Coupons { get; set; }
         [InverseProperty(nameof(Post.ImageMetadataSet))]
         public virtual ICollection<Post> Posts { get; set; }
+
+        public override string ToString()
+        {
+            return FileName;
+        }
     }
 }

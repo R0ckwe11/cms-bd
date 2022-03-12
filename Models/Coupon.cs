@@ -33,5 +33,10 @@ namespace cms_bd.Models
         public virtual ICollection<TagCouponPivot> TagCouponPivots { get; set; }
         [InverseProperty(nameof(UsedCoupon.CouponUsed))]
         public virtual ICollection<UsedCoupon> UsedBy { get; set; }
+
+        public override string ToString()
+        {
+            return Name ?? "";
+        }
     }
 }

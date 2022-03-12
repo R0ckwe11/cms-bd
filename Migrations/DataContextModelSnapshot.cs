@@ -220,6 +220,7 @@ namespace cms_bd.Migrations
                         .HasColumnType("int");
 
                     b.Property<string>("Name")
+                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<DateTime>("UpdatedAt")
@@ -316,7 +317,7 @@ namespace cms_bd.Migrations
                         .HasColumnType("bit");
 
                     b.Property<DateTime>("LastLogin")
-                        .ValueGeneratedOnAddOrUpdate()
+                        .ValueGeneratedOnAdd()
                         .HasColumnType("datetime2")
                         .HasDefaultValueSql("CURRENT_TIMESTAMP");
 
@@ -369,23 +370,6 @@ namespace cms_bd.Migrations
                         .HasFilter("[NormalizedUserName] IS NOT NULL");
 
                     b.ToTable("AspNetUsers", (string)null);
-
-                    b.HasData(
-                        new
-                        {
-                            Id = 1,
-                            AccessFailedCount = 0,
-                            ConcurrencyStamp = "5b3565ad-0b48-4861-95d6-fd4337142038",
-                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Email = "admin@admin.com",
-                            EmailConfirmed = false,
-                            LastLogin = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            LockoutEnabled = false,
-                            PhoneNumberConfirmed = false,
-                            TwoFactorEnabled = false,
-                            UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            UserName = "admin"
-                        });
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<int>", b =>

@@ -1,19 +1,12 @@
 ﻿#nullable disable
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using cms_bd.Data;
 using cms_bd.DTOs;
-using cms_bd.Models;
 using Microsoft.AspNetCore.Authorization;
 
 namespace cms_bd.Controllers
 {
-    [Authorize]
     [Route("api")]
     [ApiController]
     public class CouponsController : ControllerBase
@@ -66,7 +59,8 @@ namespace cms_bd.Controllers
         }
 
         // GET: api/coupons/5
-        [HttpGet("{id}")]
+        [Authorize]
+        [HttpGet("coupon/{id}")]
         public async Task<ActionResult<CouponDetailsDTO>> GetCoupon(int id)
         {
             var coupon = await _context.Coupons.FindAsync(id);

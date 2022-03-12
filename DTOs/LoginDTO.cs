@@ -1,8 +1,8 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace cms_bd.Models;
+namespace cms_bd.DTOs;
 
-public class Login {
+public class LoginDTO {
     [Required]
     public string UserName { get; set; }
     [Required]

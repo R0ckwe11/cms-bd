@@ -1,9 +1,4 @@
 ﻿#nullable disable
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using cms_bd.Data;
@@ -55,13 +50,13 @@ namespace cms_bd.Controllers
         }
 
         [HttpPost("users/login")]
-        public async Task<IActionResult> Login(Login model) {
+        public async Task<IActionResult> Login(LoginDTO login) {
 
-            if (!(await UsernameTaken(model.UserName))) {
+            if (!(await UsernameTaken(login.UserName))) {
                 ModelState.AddModelError("username", "User does not exist");
                 return new ValidationFailedResult(ModelState, StatusCodes.Status400BadRequest);
             }
-            Microsoft.AspNetCore.Identity.SignInResult result = await signInManager.PasswordSignInAsync(model.UserName, model.Password, true, false);
+            Microsoft.AspNetCore.Identity.SignInResult result = await signInManager.PasswordSignInAsync(login.UserName, login.Password, true, false);
             if (result.Succeeded) {
                 return Ok();
             } else {
@@ -77,7 +72,7 @@ namespace cms_bd.Controllers
         }
 
         [HttpPost("users/register")]
-        public async Task<IActionResult> Register(Register register) {
+        public async Task<IActionResult> Register(RegisterDTO register) {
             User user = register.CreateUser();
 
             IdentityResult result = await userManager.CreateAsync(

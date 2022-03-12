@@ -9,7 +9,7 @@ namespace cms_bd.Models
         [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int ID { get; set; }
-        public string? Name { get; set; }
+        public string Name { get; set; }
         public int IsArchived { get; set; }
         [DatabaseGenerated(DatabaseGeneratedOption.Computed)]
         public DateTime UpdatedAt { get; set; }
@@ -21,5 +21,10 @@ namespace cms_bd.Models
 
         [InverseProperty(nameof(TagCouponPivot.TagPivot))]
         public virtual ICollection<TagCouponPivot> TagCouponPivots { get; set; }
+
+        public override string ToString()
+        {
+            return Name;
+        }
     }
 }

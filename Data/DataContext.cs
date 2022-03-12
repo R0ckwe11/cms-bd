@@ -15,20 +15,6 @@ namespace cms_bd.Data
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder) {
             optionsBuilder.UseSqlServer(Configuration.GetConnectionString("DefaultConnection"));
         }
-        private void SeedUsers(ModelBuilder builder)  
-        {  
-            var user = new User()  
-            {   
-                Id = 1,
-                UserName = "admin",
-                Email = "admin@admin.com",
-            };  
-  
-            var passwordHasher = new PasswordHasher<User>();  
-            passwordHasher.HashPassword(user, "admin");  
-  
-            builder.Entity<User>().HasData(user);  
-        }
 
         public IConfiguration Configuration { get; }
 
@@ -39,7 +25,6 @@ namespace cms_bd.Data
         public DbSet<Tag> Tags { get; set; }
         public DbSet<TagCouponPivot> TagCouponPivot { get; set; }
         public DbSet<UsedCoupon> UsedCoupons { get; set; }
-        // public DbSet<User> Users { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -146,8 +131,6 @@ namespace cms_bd.Data
             modelBuilder.Entity<User>()
                 .Property(u => u.LastLogin)
                 .HasDefaultValueSql("CURRENT_TIMESTAMP");
-
-            this.SeedUsers(modelBuilder);
         }
     }
 }

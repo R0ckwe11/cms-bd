@@ -9,8 +9,6 @@ using Microsoft.Extensions.FileProviders;
 
 var builder = WebApplication.CreateBuilder(args);
 
-var myAllowSpecificOrigins = "_myAllowSpecificOrigins";
-
 // Add services to the container.
 
 builder.Services.AddControllers();
@@ -30,8 +28,7 @@ builder.Services.AddSession(options => {
     options.Cookie.IsEssential = true;
 });
 
-builder.Services
-    .AddIdentity<User, Role>()
+builder.Services.AddIdentity<User, Role>()
     .AddEntityFrameworkStores<DataContext>();
 
 builder.Services.AddAuthentication((cfg => {
@@ -61,10 +58,10 @@ builder.Services.Configure<IdentityOptions>(options => {
 // Enable CORS
 builder.Services.AddCors(options =>
 {
-    options.AddPolicy(name: myAllowSpecificOrigins,
+    options.AddPolicy("EnableCORS",
         builder =>
         {
-            builder.WithOrigins("http://localhost:8100")
+            builder.AllowAnyOrigin()
                 .AllowAnyMethod()
                 .AllowAnyHeader();
         });
@@ -89,13 +86,16 @@ if (app.Environment.IsDevelopment())
 using (var scope = app.Services.CreateScope())
 {
     var services = scope.ServiceProvider;
-
     var context = services.GetRequiredService<DataContext>();
+    var userManager = services.GetRequiredService<UserManager<User>>();
+
+    context.Database.Migrate();
     context.Database.EnsureCreated();
-    var databaseClean = DbInitializer.InitializeDefaultUser(context);
+
+    // var defaultUserAdded =
+        await DbInitializer.AddDefaultUser(context, userManager);
     DbInitializer.UpdateImageDirectoryMetadata(context);
-    if (databaseClean) 
-        DbInitializer.Initialize(context);
+    // if (defaultUserAdded) DbInitializer.AddExampleData(context);
 }
 
 app.UseHttpsRedirection();
@@ -107,7 +107,7 @@ app.UseStaticFiles(new StaticFileOptions
     RequestPath = new PathString("/images")
 });
 
-app.UseCors(myAllowSpecificOrigins);
+app.UseCors("EnableCORS");
 
 app.UseAuthentication();
 app.UseAuthorization();

@@ -206,7 +206,7 @@ namespace cms_bd.Migrations
                 {
                     ID = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    Name = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Name = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     IsArchived = table.Column<int>(type: "int", nullable: false),
                     UpdatedAt = table.Column<DateTime>(type: "datetime2", nullable: false, defaultValueSql: "CURRENT_TIMESTAMP"),
                     UpdatedBy = table.Column<int>(type: "int", nullable: false)
@@ -333,11 +333,6 @@ namespace cms_bd.Migrations
                         principalTable: "Coupons",
                         principalColumn: "ID");
                 });
-
-            migrationBuilder.InsertData(
-                table: "AspNetUsers",
-                columns: new[] { "Id", "AccessFailedCount", "ConcurrencyStamp", "Email", "EmailConfirmed", "LockoutEnabled", "LockoutEnd", "NormalizedEmail", "NormalizedUserName", "PasswordHash", "PhoneNumber", "PhoneNumberConfirmed", "SecurityStamp", "TwoFactorEnabled", "UserName" },
-                values: new object[] { 1, 0, "5b3565ad-0b48-4861-95d6-fd4337142038", "admin@admin.com", false, false, null, null, null, null, null, false, null, false, "admin" });
 
             migrationBuilder.CreateIndex(
                 name: "IX_AspNetRoleClaims_RoleId",
