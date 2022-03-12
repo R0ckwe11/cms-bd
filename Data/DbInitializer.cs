@@ -6,20 +6,29 @@ namespace cms_bd.Data
 {
     public static class DbInitializer
     {
-        public static async Task<bool> AddDefaultUser(DataContext context, UserManager<User> userManager)
+        public static async Task<bool> AddDefaultUser(DataContext context, UserManager<User> userManager, RoleManager<Role> roleManager)
         {
             if (context.Users.Any(t => t.UserName == "admin"))
             {
                 return false;
             }
 
+            var role = new Role
+            {
+                Name = "Admin"
+            };
+            await roleManager.CreateAsync(role);
+
             var user = new User
             {
                 UserName = "admin",
                 Email = "admin@admin.com"
             };
-
             var result = await userManager.CreateAsync(user, "admin");
+            if (result.Succeeded)
+            {
+                await userManager.AddToRoleAsync(user, "Admin");
+            }
 
             return result == IdentityResult.Success;
         }

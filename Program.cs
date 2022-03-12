@@ -11,7 +11,7 @@ var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 
-builder.Services.AddControllers();
+builder.Services.AddControllersWithViews();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
@@ -69,6 +69,7 @@ builder.Services.AddCors(options =>
 
 builder.Services.AddCoreAdmin(new CoreAdminOptions
 {
+    RestrictToRoles = new[] { "Admin" },
     IgnoreEntityTypes = new List<Type> { typeof(DateTime) }
 });
 
@@ -88,12 +89,13 @@ using (var scope = app.Services.CreateScope())
     var services = scope.ServiceProvider;
     var context = services.GetRequiredService<DataContext>();
     var userManager = services.GetRequiredService<UserManager<User>>();
+    var roleManager = services.GetRequiredService<RoleManager<Role>>();
 
     context.Database.Migrate();
     context.Database.EnsureCreated();
 
     // var defaultUserAdded =
-        await DbInitializer.AddDefaultUser(context, userManager);
+        await DbInitializer.AddDefaultUser(context, userManager, roleManager);
     DbInitializer.UpdateImageDirectoryMetadata(context);
     // if (defaultUserAdded) DbInitializer.AddExampleData(context);
 }
@@ -109,6 +111,7 @@ app.UseStaticFiles(new StaticFileOptions
 
 app.UseCors("EnableCORS");
 
+app.UseRouting();
 app.UseAuthentication();
 app.UseAuthorization();
 app.UseSession();
